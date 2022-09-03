@@ -3,15 +3,15 @@ import pygame
 from pygame.locals import *
 
 
-n = 60
-wall_values = {"left wall": 100, "right wall": 100, "top wall": 100, "bottom wall": 100}
+n = 50
+wall_values = {"left wall": 20, "right wall": 50, "top wall": 0, "bottom wall": 0}
 x_left_init = np.zeros(n) + wall_values["left wall"]
 x_right_init = np.zeros(n) + wall_values["right wall"]
 y_top_init = np.zeros(n) + wall_values["top wall"]
 y_bottom_init = np.zeros(n) + wall_values["bottom wall"]
 
 
-matrix_temp = np.ones((n, n))
+matrix_temp = np.zeros((n, n))
 matrix_temp[:, 0] = x_left_init
 matrix_temp[:, -1] = x_right_init
 matrix_temp[0, :] = y_top_init
@@ -46,11 +46,11 @@ def temperature(matrix_temp):
     return matrix_temp
 
 
-TILESIZE = 600 // n
+TILESIZE = 500 // n
 
 
 def create_board_surf(matrix_temp):
-    board_surf = pygame.Surface((600, 600))
+    board_surf = pygame.Surface((500, 500))
 
     for j in range(n):
         for i in range(n):
@@ -62,7 +62,31 @@ def create_board_surf(matrix_temp):
 
 
 pygame.init()
-screen = pygame.display.set_mode((600, 600))
+sc = pygame.display.set_mode((600, 600))
+
+
+def initial():
+    font = pygame.font.SysFont(None, 40)
+    imgl = font.render(
+        f'temperature = {wall_values["left wall"]} °C', True, (100, 100, 100)
+    )
+    imgr = font.render(
+        f'temperature = {wall_values["right wall"]} °C', True, (100, 100, 100)
+    )
+    imgt = font.render(
+        f'temperature = {wall_values["top wall"]} °C', True, (100, 100, 100)
+    )
+    imgb = font.render(
+        f'temperature = {wall_values["bottom wall"]} °C', True, (100, 100, 100)
+    )
+    imgl = pygame.transform.rotate(imgl, 90)
+    imgr = pygame.transform.rotate(imgr, 90)
+    sc.blit(imgl, (10, 300 - 150))
+    sc.blit(imgr, (600 - 40, 300 - 150))
+    sc.blit(imgt, (300 - 150, 10))
+    sc.blit(imgb, (300 - 150, 600 - 40))
+
+
 cont = True
 while cont:
     events = pygame.event.get()
@@ -74,8 +98,9 @@ while cont:
         if e.type == pygame.MOUSEBUTTONUP:
             pass
     matrix_temp[:] = temperature(matrix_temp)
-    screen.fill(pygame.Color("grey"))
-    screen.blit(create_board_surf(matrix_temp), (0, 0))
+    sc.fill(pygame.Color("grey"))
+    initial()
+    sc.blit(create_board_surf(matrix_temp), (50, 50))
     pygame.display.flip()
 
 pygame.quit()
