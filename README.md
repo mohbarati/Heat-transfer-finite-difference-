@@ -3,7 +3,7 @@
 Solve Laplace equation via gauss seidel aka Liebmann method on a square with given boundaries.  
 
 To Do:  
-* ~~ writing the initial conditions on the screen ~~  and drawing heat map  
+* ~~writing the initial conditions on the screen~~  and drawing heat map  
 * Getting rid of the nested loop by using numpy  
 * Finding better collor map for heat transfer  
 * Documentation and commenting  
